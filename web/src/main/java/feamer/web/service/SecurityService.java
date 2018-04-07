@@ -3,15 +3,14 @@ package feamer.web.service;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class SecurityService {
+import feamer.web.dto.UserDTO;
 
-	private HashMap<String, String> users = new HashMap<>();
+public class SecurityService {
 	private HashMap<String, String> tokens = new HashMap<>();
 
 	private static SecurityService service;
 
 	private SecurityService() {
-		users.put("tobi", "c219c4dc4b7ff6be7a7090459bc6d06a879a1577");
 	}
 
 	public static SecurityService getInstance() {
@@ -29,8 +28,10 @@ public class SecurityService {
 	}
 
 	public boolean register(String username, String hashword) {
-		if (!users.keySet().contains(username)) {
-			users.put(username, hashword);
+		UserDTO user = DataService.getInstance().getUser(username);
+		
+		if (user == null) {
+			DataService.getInstance().addNewUser(DataService.generateID(), username, hashword);
 			return true;
 		}
 
@@ -43,7 +44,11 @@ public class SecurityService {
 
 	public String authenticate(String username, String hasword) {
 		
-		String password = users.get(username);
+		UserDTO user = DataService.getInstance().getUser(username);
+		if (user == null) {
+			return "";
+		}
+		String password = user.getPassword();
 		
 		if (password != null && password.equals(hasword)) {
 			String token = "";
@@ -59,8 +64,15 @@ public class SecurityService {
 		return "";
 
 	}
+	
+	public String getUserFromToken(String token) {
+		return tokens.entrySet().stream().filter(entry-> entry.getValue().equals(token)).map(entry -> entry.getKey()).findFirst().orElse(null);
+	}
 
 	public boolean validateToken(String token) {
+		if (token == null) {
+			return false;
+		}
 		return tokens.containsValue(token);
 	}
 

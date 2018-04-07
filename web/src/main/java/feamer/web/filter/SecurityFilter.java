@@ -14,7 +14,8 @@ public class SecurityFilter {
 		});
 		
 		Spark.before("/rest/*", (req, res) ->{
-			String token = req.headers("Authentication");
+			System.out.println("check rest authentication");
+			String token = req.headers("Authorization");
 			if (!checkAuthentication(token)) {
 				Spark.halt(401);
 			}

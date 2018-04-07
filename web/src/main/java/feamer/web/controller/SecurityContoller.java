@@ -20,8 +20,10 @@ public class SecurityContoller {
 			boolean stat = SecurityService.getInstance().register(username, password);
 			
 			if (stat) {
+				System.out.println("sucessfull registered: "+username);
 				return "{\"status\":\"ok\"}";
 			} else {
+				System.out.println("error on register: "+ username);
 				return "{\"status\":\"error\"}";
 			}
 			
@@ -34,8 +36,10 @@ public class SecurityContoller {
 			String password = json.getString("password");
 			String token = SecurityService.getInstance().authenticate(username, password);
 			if (token.isEmpty()) {
+				System.out.println("wrong authentication");
 				Spark.halt(401);
 			}
+			System.out.println("sucessfully authenticated with token: "+token);
 			return token;
 		});
 	}
