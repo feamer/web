@@ -1,14 +1,16 @@
 package feamer.web.service;
 
-import java.io.InputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.eclipse.jetty.server.session.Session;
+import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 @WebSocket
 public class WebsocketService {
@@ -32,7 +34,7 @@ public class WebsocketService {
 			list.add(session);
 			sessions.put(user, list);
 		}
-		System.out.println("added new Websocket connection for user: "+ user +" with id: "+session.getId());
+		System.out.println("added new Websocket connection for user: "+ user);
 	}
 	
 	@OnWebSocketClose
@@ -41,15 +43,38 @@ public class WebsocketService {
 			for (Session s: sessions.get(u)) {
 				if (s.equals(session)) {
 					sessions.get(u).remove(s);
-					System.out.println("removed session"+ session.getId()+", caused by"+reason);
+					System.out.println("removed session, caused by"+reason);
 				}
 			}
 		}
 	}
 	
 	@OnWebSocketMessage
-	public void message (Session session, InputStream stream) {
+	public void message (Session session, String message) {
 		
+		String u = "";
+		
+		for (String user : sessions.keySet()) {
+			ArrayList<Session> l = sessions.get(user);
+				if (l.contains(session)) {
+					u = user;
+					break;
+			}
+		}
+		
+		ArrayList<Session> list = sessions.get(u);
+		for (Session s : list) {
+			if (!s.equals(session)) {
+				try {
+					JSONObject jsonMessage = new JSONObject(new JSONTokener(message));
+					//debug
+					jsonMessage.append("endpoint", "/get/228374");
+					s.getRemote().sendString(message);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
-
 }

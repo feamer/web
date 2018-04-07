@@ -3,8 +3,6 @@ package feamer.web.service;
 import java.util.HashMap;
 import java.util.UUID;
 
-import org.eclipse.jetty.util.security.Password;
-
 public class SecurityService {
 
 	private HashMap<String, String> users = new HashMap<>();
@@ -13,7 +11,7 @@ public class SecurityService {
 	private static SecurityService service;
 
 	private SecurityService() {
-
+		users.put("tobi", "c219c4dc4b7ff6be7a7090459bc6d06a879a1577");
 	}
 
 	public static SecurityService getInstance() {
@@ -58,7 +56,7 @@ public class SecurityService {
 			
 			return token;
 		}
-		return null;
+		return "";
 
 	}
 

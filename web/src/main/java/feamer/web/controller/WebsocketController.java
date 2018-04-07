@@ -6,7 +6,7 @@ import spark.Spark;
 public class WebsocketController {
 	
 	public void register () {
-		Spark.webSocket("/file", WebsocketService.class);
+		Spark.webSocket("/ws", WebsocketService.class);
 	}
 
 }

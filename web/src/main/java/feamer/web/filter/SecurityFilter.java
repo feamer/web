@@ -6,7 +6,7 @@ import spark.Spark;
 public class SecurityFilter {
 
 	public void apply () {
-		Spark.before("/file", (req, res) ->{
+		Spark.before("/ws", (req, res) ->{
 			String token = req.headers("Authentication");
 			if (!checkAuthentication(token)) {
 				Spark.halt(401);
