@@ -25,7 +25,7 @@ public class App
     public App () {
     	
     	Spark.port(80);
-    	
+    	Spark.staticFiles.location("/resources/");
     	
     	System.out.println("register websockets");
     	websocket.register();
