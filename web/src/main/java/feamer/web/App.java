@@ -3,6 +3,7 @@ package feamer.web;
 import feamer.web.controller.MainController;
 import feamer.web.controller.SecurityContoller;
 import feamer.web.controller.WebsocketController;
+import feamer.web.filter.SecurityFilter;
 import feamer.web.service.DataService;
 import spark.Spark;
 
@@ -22,6 +23,8 @@ public class App
     MainController main = new MainController();
     SecurityContoller security = new SecurityContoller();
     
+    SecurityFilter filter = new SecurityFilter();
+    
     public App () {
     	
     	Spark.port(80);
@@ -36,6 +39,10 @@ public class App
     	System.out.println("register security routes");
     	security.register();
     	System.out.println("security routes finished");
+    	System.out.println("apply filter");
+    	filter.apply();
     	Spark.init();
+    	
+    	
     }
 }

@@ -14,15 +14,15 @@ import org.json.JSONTokener;
 
 @WebSocket
 public class WebsocketService {
-	
-	private ConcurrentHashMap<String ,ArrayList<Session>> sessions = new ConcurrentHashMap<String, ArrayList<Session>>();
-	
+
+	private static ConcurrentHashMap<String, ArrayList<Session>> sessions = new ConcurrentHashMap<String, ArrayList<Session>>();
+
 	@OnWebSocketConnect
-	public void connect (Session session) {
-		//default user
+	public void connect(Session session) {
+		// default user
 		String user = "user";
 		if (sessions.containsKey(user)) {
-			if (sessions.get(user) != null) {				
+			if (sessions.get(user) != null) {
 				sessions.get(user).add(session);
 			} else {
 				ArrayList<Session> list = sessions.get(user);
@@ -34,46 +34,42 @@ public class WebsocketService {
 			list.add(session);
 			sessions.put(user, list);
 		}
-		System.out.println("added new Websocket connection for user: "+ user);
+		System.out.println("added new Websocket connection for user: " + user);
 	}
-	
+
 	@OnWebSocketClose
 	public void close(Session session, int statusCode, String reason) {
 		for (String u : sessions.keySet()) {
-			for (Session s: sessions.get(u)) {
+			for (Session s : sessions.get(u)) {
 				if (s.equals(session)) {
 					sessions.get(u).remove(s);
-					System.out.println("removed session, caused by"+reason);
+					System.out.println("removed session, caused by" + reason);
 				}
 			}
 		}
 	}
-	
+
 	@OnWebSocketMessage
-	public void message (Session session, String message) {
+	public void message(Session session, String message) {
+
+	}
+
+	public static void sendNotification(String user, String fileId, String filename) {
 		
-		String u = "";
-		
-		for (String user : sessions.keySet()) {
-			ArrayList<Session> l = sessions.get(user);
-				if (l.contains(session)) {
-					u = user;
-					break;
-			}
+		ArrayList<Session> list = sessions.get(user);
+		if (list == null) {
+			return;
 		}
-		
-		ArrayList<Session> list = sessions.get(u);
-		for (Session s : list) {
-			if (!s.equals(session)) {
-				try {
-					JSONObject jsonMessage = new JSONObject(new JSONTokener(message));
-					//debug
-					jsonMessage.append("endpoint", "/get/228374");
-					s.getRemote().sendString(message);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		JSONObject meta = new JSONObject();
+		meta.append("name", filename);
+		meta.append("endpoint", "/rest/file/"+fileId);
+		meta.append("timestemp", System.currentTimeMillis());
+		for (Session s :list) {
+			try {
+				s.getRemote().sendString(meta.toString());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
