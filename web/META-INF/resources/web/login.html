@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <!--
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
+    -->
+    <link rel="stylesheet" href="../styles/style.css">
+
+    <title>feamer | beam up your files.</title>
+    <script>
+    	function login() {
+			// alert("hallo");
+			var xhttp = new XMLHttpRequest();
+			xhttp.open("POST", "http://51.144.0.67/login", true);
+			//xhttp.setRequestHeader("Content-Type", "application/json");
+			xhttp.setRequestHeader('Content-type','application/json; charset=utf-8');
+
+			var json_obj = '{'
+				+'"username" : "' + document.getElementById('username_txtfield').value + '",' //getElementsByTagName("input")[0]
+				//+'"username" : "' + 'tobi'+ '",' //getElementsByTagName("input")[0]
+				+'"password"  : "' + document.getElementById('password_txtfield').value + '"'			
+				+'}';
+			console.log(json_obj);
+			
+			//xhttp.send(json_obj);
+			xhttp.send(json_obj);
+
+			console.log("send request");
+		}
+    </script>
+  </head>
+  <body>
+    <!-- Sichtbarer Dokumentinhalt im body -->
+    <div id="headerbar">
+    	<ul>
+		  <li>
+		  	<a href="#" class="notactive">Home</a></li>
+		  <li>
+		  	<a href="./news" class="notactive">News</a></li>
+		  <li>
+		  	<a href="./contact" class="notactive">Contact</a>
+		  </li>
+		  <li>
+		  	<a href="./web/about" class="notactive">About Us</a>
+		  </li>
+		 <!--
+		  <li>
+		  	<a href="/about" class="notactive">Foo</a>
+		  </li>
+		 -->
+		  <li style="float:right">
+		  	<a href="./web/login.html" class="activepage">Login</a>
+		  </li>
+  		</ul>
+    </div>
+	
+	<div id="loginform">
+		<form name="login"  method="post" action="javascript:login()">
+			<div class="loginelements">
+				Username:
+				<input type="text" id="username_txtfield" name="username" value="tobi">
+			</div>
+			<div class="loginelements">
+		<br>
+				Password:
+				<input type="text" id="password_txtfield" name="password" value="c219c4dc4b7ff6be7a7090459bc6d06a879a1577">
+			</div>
+		<br>
+			<div>
+				<!--<input type="submit" value="Submit">-->
+				<button type="submit">Submit</button>
+			</div>
+		</form>
+	</div>
+  </body>
+</html>
