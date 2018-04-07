@@ -3,6 +3,7 @@ package feamer.web;
 import feamer.web.controller.MainController;
 import feamer.web.controller.SecurityContoller;
 import feamer.web.controller.WebsocketController;
+import feamer.web.service.DataService;
 import spark.Spark;
 
 /**
@@ -14,6 +15,7 @@ public class App
     public static void main( String[] args )
     {
         App app = new App();
+        DataService.getInstance().checkInitialState();
     }
     
     WebsocketController websocket = new WebsocketController();

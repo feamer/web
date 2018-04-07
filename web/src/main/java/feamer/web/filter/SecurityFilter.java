@@ -12,6 +12,14 @@ public class SecurityFilter {
 				Spark.halt(401);
 			}
 		});
+		
+		Spark.before("/rest/*", (req, res) ->{
+			String token = req.headers("Authentication");
+			if (!checkAuthentication(token)) {
+				Spark.halt(401);
+			}
+		});
+		
 	}
 	
 	public boolean checkAuthentication (String token) {
