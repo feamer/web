@@ -61,8 +61,8 @@ public class WebsocketService {
 
 	public static void sendNotification(String user, String fileId, long size, String filename) {
 
-		CopyOnWriteArrayList<Session> list = new CopyOnWriteArrayList<Session>(sessions.get(user));
 		System.out.println("user: " + user);
+		CopyOnWriteArrayList<Session> list = new CopyOnWriteArrayList<Session>(sessions.get(user));
 		if (list == null) {
 			return;
 		}

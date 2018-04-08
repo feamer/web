@@ -204,7 +204,7 @@ function register() {
 	xhttp.onload = function() {
 		// Do whatever with response
 		var token = xhttp.responseText;
-		alert(token);
+		alert('registered new User');
 
 	}
 }
@@ -230,4 +230,18 @@ function getCookie(cname) {
 		}
 	}
 	return null;
+}
+
+function addFriend (id){
+	
+	var token = getCookie('token');
+	debugger;
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("POST", "http://"+window.location.host+"/rest/addFriend?id="+id, true);
+	xhttp.setRequestHeader('Authorization', token);
+	xhttp.send();
+	xhttp.onload = function (){
+		alert('added new Friend with id' + id);
+	}
+	
 }

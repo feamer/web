@@ -17,6 +17,7 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
 	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 	crossorigin="anonymous"></script>
+	<script src="../../scripts/javascript.js"></script>
 
 <title>feamer | beam up your files.</title>
 
@@ -33,6 +34,14 @@
 	</nav>
 
 	<div class="container">
+		<h1>Friends</h1>
+		<h4>Your user id</h4>
+		<label th:text="${user.id}"></label>
+		
+		<h4>Add friend</h4>
+		<input id="friendId" class="input-field" type="text" placeholder="user id">
+		<button class="btn" onclick="addFriend(document.getElementById('friendId').value)">Add Friend</button>
+		
 		<h1>History</h1>
 		<div class="history-item row" th:each="history: ${allHistory}">
 			<div class="col s3" th:if="${history.type} == 'upload'">

@@ -1,9 +1,9 @@
 package feamer.web.dto;
 
 public class UserDTO {
-	String id;
-	String name;
-	String password;
+	public String id;
+	public String name;
+	public String password;
 	public String getId() {
 		return id;
 	}

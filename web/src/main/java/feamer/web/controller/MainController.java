@@ -1,10 +1,8 @@
 package feamer.web.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;import javax.swing.filechooser.FileNameExtensionFilter;
+import java.util.HashMap;
 
 import feamer.web.dto.FileDTO;
-import feamer.web.dto.HistoryDTO;
 import feamer.web.service.DataService;
 import feamer.web.service.SecurityService;
 import feamer.web.service.TemplateService;
@@ -35,17 +33,16 @@ public class MainController {
 		});
 		
 		Spark.post("/rest/share", (req, res) -> {
-			String friendname = req.queryParams("friend");
+			String friendname = req.queryParams("name");
 			byte[] bytes = req.bodyAsBytes();
 			String fileId = DataService.generateID();
 			String token = req.headers("Authorization");
-			String user = SecurityService.getInstance().getUserFromToken(token);
 			String filename = req.headers("Filename");
 			
 			System.out.println("share");
 			
-			DataService.getInstance().addNewFile(fileId, filename, user, bytes);
-			DataService.getInstance().addNewHistory(DataService.generateID(), user, fileId, "upload");
+			DataService.getInstance().addNewFile(fileId, filename, friendname, bytes);
+			DataService.getInstance().addNewHistory(DataService.generateID(), friendname, fileId, "upload");
 			WebsocketService.sendNotification(friendname, fileId, bytes.length, filename);
 			
 			return fileId;
@@ -86,13 +83,17 @@ public class MainController {
 		
 		Spark.post("/rest/addFriend", (req, res) -> {
 			String token = req.headers("Authorization");
-			String friendname = req.queryParams("name");
-			if (friendname == null) {
-				return "";
+			String friendId = req.queryParams("id");
+			if (friendId == null) {
+				Spark.halt(500, "no token available");
+			}
+			String friendName = DataService.getInstance().getUserById(friendId).getName();
+			if (friendName == null) {
+				Spark.halt(500, "no token available");
 			}
 			String user = SecurityService.getInstance().getUserFromToken(token);
-			DataService.getInstance().addFriend(user, friendname);
-			return "";
+			DataService.getInstance().addFriend(user, friendName);
+			return "{\"status\" : \"ok\"}";
 		});
 		
 		Spark.get("/info", (res, req) -> {
@@ -116,10 +117,12 @@ public class MainController {
 			if (token == null) {
 				token = req.cookie("token");
 			}
+			String name = SecurityService.getInstance().getUserFromToken(token);
 			System.out.println("post history: "+token);
 			String user = SecurityService.getInstance().getUserFromToken(token);
 			System.out.println("history for user:" +user);
 			model.put("allHistory", DataService.getInstance().getHistory(user));
+			model.put("user", DataService.getInstance().getUser(name));
 			return TemplateService.getInstance().render(model, "web/connected/history");
 		});
 	}
