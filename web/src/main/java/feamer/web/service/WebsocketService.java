@@ -3,6 +3,7 @@ package feamer.web.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
@@ -15,22 +16,24 @@ import org.json.JSONTokener;
 @WebSocket
 public class WebsocketService {
 
-	private static ConcurrentHashMap<String, ArrayList<Session>> sessions = new ConcurrentHashMap<String, ArrayList<Session>>();
+	private static ConcurrentHashMap<String, CopyOnWriteArrayList<Session>> sessions = new ConcurrentHashMap<String, CopyOnWriteArrayList<Session>>();
 
 	@OnWebSocketConnect
 	public void connect(Session session) {
 		// default user
-		String user = "user";
+		
+		String token = session.getUpgradeRequest().getHeader("Authorization");
+		String user = SecurityService.getInstance().getUserFromToken(token);
 		if (sessions.containsKey(user)) {
 			if (sessions.get(user) != null) {
 				sessions.get(user).add(session);
 			} else {
-				ArrayList<Session> list = sessions.get(user);
-				list = new ArrayList<>();
+				CopyOnWriteArrayList<Session> list = sessions.get(user);
+				list = new CopyOnWriteArrayList<>();
 				list.add(session);
 			}
 		} else {
-			ArrayList<Session> list = new ArrayList<>();
+			CopyOnWriteArrayList<Session> list = new CopyOnWriteArrayList<>();
 			list.add(session);
 			sessions.put(user, list);
 		}
@@ -54,19 +57,29 @@ public class WebsocketService {
 
 	}
 
-	public static void sendNotification(String user, String fileId, String filename) {
+	public static void sendNotification(String user, String fileId, String filename, String origin) {
 		
-		ArrayList<Session> list = sessions.get(user);
+		CopyOnWriteArrayList<Session> list = sessions.get(user);
+		System.out.println("user: "+user);
 		if (list == null) {
+			System.out.println("list of sessions: "+ sessions);
 			return;
 		}
+		System.out.println("send ws notification");
 		JSONObject meta = new JSONObject();
-		meta.append("name", filename);
-		meta.append("endpoint", "/rest/file/"+fileId);
-		meta.append("timestemp", System.currentTimeMillis());
+		meta.put("name", filename);
+		meta.put("endpoint", "/rest/file/"+fileId);
+		meta.put("timestamp", System.currentTimeMillis());
 		for (Session s :list) {
 			try {
-				s.getRemote().sendString(meta.toString());
+				System.out.println("origin: "+ origin);
+				System.out.println("sessionAddress: "+ s.getRemoteAddress().getHostString());
+				if (!origin.equals(s.getRemoteAddress().getHostString())) {
+					s.getRemote().sendString(meta.toString());
+					System.out.println("send ws notification to "+s.getRemoteAddress());
+				} else {
+					System.out.println("skip connection, because this is the origin location");
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

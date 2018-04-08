@@ -19,10 +19,11 @@ public class DataService {
 	
 	
 	String addUser = "insert into users values (?, ?, ?)";
-	String addFile = "insert into files values (?, ?, ?, ?)";
+	String addFile = "insert into files values (?, ?, ?, ?, ?)";
 	String addHistory = "insert into history values (?, ?, ?, ?)";
 	String getFile = "select * from files where id=?";
 	String getUser = "select * from users where username=?";
+	String deleteold = "delete from files where timestamp<?";
 	
 	private DataService (){
 		try {
@@ -65,7 +66,7 @@ public class DataService {
 			System.out.println("create initial database tables");
 			Statement s = con.createStatement();
 			s.execute("create table users(id varchar(255) not null primary key, username varchar(255), password varchar(255));");
-			s.execute("create table files(id varchar(255) not null primary key, filename varchar(255), userid varchar(255), file blob);");
+			s.execute("create table files(id varchar(255) not null primary key, filename varchar(255), userid varchar(255), file blob, timestamp bigint);");
 			s.execute("create table history(id varchar(255) not null primary key, userid varchar(255), fileid varchar(255), type varchar(255));");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -88,6 +89,7 @@ public class DataService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		clearFiles();
 	}
 	
 	public void addNewFile (String id, String filename, String userid, byte[] file) {
@@ -98,12 +100,14 @@ public class DataService {
 			s.setString(2, filename);
 			s.setString(3, userid);
 			s.setBytes(4, file);
+			s.setLong(5, System.currentTimeMillis());
 			
 			s.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		clearFiles();
 	}
 	
 	public UserDTO getUser(String username) {
@@ -150,7 +154,10 @@ public class DataService {
 			s.setString(1, id);
 			
 			ResultSet result = s.executeQuery();
-			result.next();
+			boolean isPresent = result.next();
+			if (isPresent) {
+				return null;
+			}
 			file.setId(result.getString("id"));
 			file.setRelatedUser(result.getString("userid"));
 			file.setName(result.getString("filename"));
@@ -176,7 +183,7 @@ public class DataService {
 			ResultSet history = sHistory.executeQuery("select * from history");
 			result += "files:\n";
 			while (files.next()) {
-				result += ""+files.getString(1)+" ,"+files.getString(2)+", "+files.getString(3)+ ", "+ files.getBlob(4).length()+"\n";
+				result += ""+files.getString(1)+" ,"+files.getString(2)+", "+files.getString(3)+ ", "+ files.getBlob(4).length()+", "+files.getLong(5)+"\n";
 			}
 			
 			result += "users:\n";
@@ -196,6 +203,21 @@ public class DataService {
 		
 		return result;
 		
+	}
+	
+	public void clearFiles() {
+		long time = 600000;
+		long timeThreshhold = System.currentTimeMillis()-time;
+		
+		try {
+			PreparedStatement s = con.prepareStatement(deleteold);
+			s.setLong(1, timeThreshhold);
+			s.execute();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

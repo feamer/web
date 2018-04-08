@@ -15,7 +15,7 @@ public class SecurityContoller {
 			JSONObject json = new JSONObject(new JSONTokener(req.body()));
 			
 			String username = json.getString("username");
-			String password = json.getString("username");
+			String password = json.getString("password");
 			
 			boolean stat = SecurityService.getInstance().register(username, password);
 			
