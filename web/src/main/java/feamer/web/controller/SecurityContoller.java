@@ -4,6 +4,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import feamer.web.service.SecurityService;
+import feamer.web.service.TemplateService;
 import spark.Spark;
 
 public class SecurityContoller {
@@ -30,6 +31,14 @@ public class SecurityContoller {
 			
 		});
 		
+		Spark.get("/web/register", (req, res) -> {
+			return TemplateService.getInstance().render(null, "web/register");
+		});
+		
+		Spark.get("/web/login", (req, res) -> {
+			return TemplateService.getInstance().render(null, "web/login");
+		});
+		
 		Spark.post("/login", (req, res) -> {
 			JSONObject json = new JSONObject(new JSONTokener(req.body()));
 			String username = json.getString("username");
@@ -40,6 +49,7 @@ public class SecurityContoller {
 				Spark.halt(401);
 			}
 			System.out.println("sucessfully authenticated with token: "+token);
+			res.cookie("token", token);
 			return token;
 		});
 	}

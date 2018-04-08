@@ -21,16 +21,18 @@ public class WebsocketService {
 	@OnWebSocketConnect
 	public void connect(Session session) {
 		// default user
-		
+
 		String token = session.getUpgradeRequest().getHeader("Authorization");
 		String user = SecurityService.getInstance().getUserFromToken(token);
+		System.out.println("connect user: "+user);
 		if (sessions.containsKey(user)) {
 			if (sessions.get(user) != null) {
 				sessions.get(user).add(session);
 			} else {
-				CopyOnWriteArrayList<Session> list = sessions.get(user);
+				CopyOnWriteArrayList<Session> list;
 				list = new CopyOnWriteArrayList<>();
 				list.add(session);
+				sessions.put(user, list);
 			}
 		} else {
 			CopyOnWriteArrayList<Session> list = new CopyOnWriteArrayList<>();
@@ -57,30 +59,25 @@ public class WebsocketService {
 
 	}
 
-	public static void sendNotification(String user, String fileId, long size, String filename, String origin) {
-		
-		CopyOnWriteArrayList<Session> list = sessions.get(user);
-		System.out.println("user: "+user);
+	public static void sendNotification(String user, String fileId, long size, String filename) {
+
+		CopyOnWriteArrayList<Session> list = new CopyOnWriteArrayList<Session>(sessions.get(user));
+		System.out.println("user: " + user);
 		if (list == null) {
-			System.out.println("list of sessions: "+ sessions);
 			return;
 		}
 		System.out.println("send ws notification");
 		JSONObject meta = new JSONObject();
 		meta.put("name", filename);
-		meta.put("endpoint", "/rest/file/"+fileId);
+		meta.put("endpoint", "/rest/file/" + fileId);
 		meta.put("size", size);
 		meta.put("timestamp", System.currentTimeMillis());
-		for (Session s :list) {
+		for (Session s : list) {
 			try {
-				System.out.println("origin: "+ origin);
-				System.out.println("sessionAddress: "+ s.getRemoteAddress().getHostString());
-				if (!origin.equals(s.getRemoteAddress().getHostString())) {
-					s.getRemote().sendString(meta.toString());
-					System.out.println("send ws notification to "+s.getRemoteAddress());
-				} else {
-					System.out.println("skip connection, because this is the origin location");
-				}
+
+				s.getRemote().sendString(meta.toString());
+				System.out.println("send ws notification to " + s.getRemoteAddress());
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

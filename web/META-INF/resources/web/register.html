@@ -1,65 +1,59 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="utf-8" />
-    <!--
+<head>
+<meta charset="utf-8" />
+<!--
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
     -->
-    <link rel="stylesheet" href="../styles/style.css">
+<link rel="stylesheet" href="../../styles/style.css">
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Compiled and minified JavaScript -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+	crossorigin="anonymous"></script>
 
-    <title>feamer | beam up your files.</title>
-    
-    
-    <script src="./../scripts/javascript.js"></script>
-  </head>
-  <body>
-    <!-- Sichtbarer Dokumentinhalt im body -->
-    <div id="headerbar">
-    	<ul>
-		  <li>
-		  	<a href="../index.html" class="notactive">Home</a></li>
-		  <li>
-		  	<a href="./news.html" class="notactive">News</a></li>
-		  <li>
-		  	<a href="./contact.html" class="notactive">Contact</a>
-		  </li>
-		  <li>
-		  	<a href="./about.html" class="notactive">About Us</a>
-		  </li>
-		 <!--
-		  <li>
-		  	<a href="/about" class="notactive">Foo</a>
-		  </li>
-		 -->
-		  <li style="float:right">
-		  	<a href="./login.html" class="notactive">Login</a>
-		  </li>
-		  <li style="float:right">
-		  	<a href="./register.html" class="activepage">Register</a>
-		  </li>
-  		</ul>
-    </div>
-	
-	<div id="loginform">
-		<form name="register"  method="post" action="javascript:register()">
+<title>feamer | beam up your files.</title>
+
+
+<script src="./../scripts/javascript.js"></script>
+</head>
+<body>
+	<nav class="nav-wrapper grey">
+		<a href="../" class="brand-logo"><img
+			src="../images/feamer_logo.png" height="50"><span>feamer</span></a>
+		<ul class="right hide-on-med-and-down">
+			<li><a href="../web/login">Login</a></li>
+			<li><a href="../">Home</a></li>
+		</ul>
+	</nav>
+
+	<div class="placeholder"></div>
+	<div class="container">
+	<h2>Register new User</h2>
+		<form name="register" method="post" action="javascript:register()">
 			<div class="loginelements">
-				Username:
-				<input type="text" id="username_txtfield" name="username">
+				Username: <input type="text" id="username_txtfield" name="username">
 			</div>
 			<div class="loginelements">
-		<br>
-				Password:
-				<input type="text" id="password_txtfield" name="password">
+				<br> Password: <input type="text" id="password_txtfield"
+					name="password">
 			</div>
-		<br>
+			<br>
 			<div>
 				<!--<input type="submit" value="Submit">-->
-				<button type="submit">Register</button>
+				<button class="btn" type="submit">Register</button>
 			</div>
 		</form>
 	</div>
-	    
-	    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
 
-  </body>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+		crossorigin="anonymous"></script>
+
+</body>
 </html>

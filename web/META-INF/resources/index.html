@@ -1,84 +1,97 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="utf-8" />
-    <!--
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
+
+<head>
+<meta charset="utf-8" />
+<!--
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     -->
-    <link rel="stylesheet" href="styles/style.css">
+<link rel="stylesheet" href="styles/style.css">
 
-    <title>feamer | beam up your files.</title>
-  </head>
-  <body>
-    <!-- Sichtbarer Dokumentinhalt im body -->
-    <div id="headerbar">
-    	<ul>
-		  <li>
-		  	<a href="#" class="activepage">Home</a></li>
-		  <li>
-		  	<a href="./web/news.html" class="notactive">News</a></li>
-		  <li>
-		  	<a href="./web/contact.html" class="notactive">Contact</a>
-		  </li>
-		  <li>
-		  	<a href="./web/about.html" class="notactive">About Us</a>
-		  </li>
-		 <!--
-		  <li>
-		  	<a href="/about" class="notactive">Foo</a>
-		  </li>
-		 -->
-		  <li style="float:right">
-		  	<a href="./web/login.html" class="notactive">Login</a>
-		  </li>
-		  <li style="float:right">
-		  	<a href="./web/register.html" class="notactive">Register</a>
-		  </li>
-  		</ul>
-    </div>
-	<div id="logo">
-	    	<img src="images/feamer_logo.png" alt="feamer" height="30%" width="30%">
-		
-			<p>
-				feamer 
-			</p>
-			<p>
-				beam up your files
-		   	</p>
-		
-	</div>
-	<div class="placeholder">
-		
-	</div>
-	<div class="description" id="descriptionroot">
-		
-		<div class="description" >
-			<div class="descriptionimg"> 
-				<img src="images/feamer_logo.png" alt="feamer">
-			</div>
-			<div class="descriptiontext">
-			Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-			</div>
-		</div>
-		<div class="description" >
-			<div class="descriptionimg"> 
-				<img src="images/feamer_logo.png" alt="feamer">
-			</div>
-			<div class="descriptiontext">
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+<!-- Compiled and minified JavaScript -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+	crossorigin="anonymous"></script>
+<title>feamer | beam up your files.</title>
+</head>
 
-Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet,			
-			</div>
-		</div>
-		<div class="description" >
-			<div class="descriptionimg"> 
-				<img src="images/feamer_logo.png" alt="feamer">
-			</div>
-			<div class="descriptiontext">
-			Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-			</div>
-		</div>
-		
+<body>
+	<!-- Sichtbarer Dokumentinhalt im body -->
+	<nav class="nav-wrapper grey">
+		<ul class="right hide-on-med-and-down">
+			<li style="float: right"><a href="./web/login.html"
+				class="notactive">Login</a></li>
+			<li style="float: right"><a href="./web/register.html"
+				class="notactive">Register</a></li>
+		</ul>
+	</nav>
+	<div class="logo">
+		<img src="images/feamer_logo.png" alt="feamer" height="30%"
+			width="30%">
+		<p>
+			<span style="font-size: 4em;">feamer</span>
+		</p>
+		<p>
+			<span style="font-size: 2em;">beam up your files</span>
+		</p>
+		<p>
+			<a class="btn" href="#description"> Show Details</a>
+			<a class="btn" href="https://github.com/feamer"><i class="fa fa-github"></i> Checkout on GitHub</a>
+		</p>
 	</div>
-  </body>
+
+	<div class="placeholder"></div>
+
+	<div class="container" id="description">
+		<div class="row">
+			<div class="col s3">
+				<img src="images/share.png" alt="" height="200">
+			</div>
+
+			<div class="col s9">
+				<h2>Share your data everywhere</h2>
+				Share all your date with just one click from every
+			</div>
+		</div>
+		<div class="row">
+			<div class="col s3 offset-s1">
+				<img src="images/clock.png" alt="" height="200">
+			</div>
+			<div class="col s8">
+				<h2>Don't waste your time</h2>
+				Share the data with just one click
+			</div>
+		</div>
+		<div class="row">
+			<div class="col s3 offset-s2">
+				<img src="images/device.png" alt="" height="200">
+			</div>
+			<div class="col s7">
+				<h2>Cross-Plattform ready!</h2>
+				Any Data at any device.
+			</div>
+		</div>
+	</div>
+	<div class="placeholder"></div>
+
+
+
+	<script type="text/javascript">
+		$(document).on('click', 'a[href^="#"]', function(event) {
+			event.preventDefault();
+
+			$('html, body').animate({
+				scrollTop : $($.attr(this, 'href')).offset().top
+			}, 500);
+		});
+	</script>
+</body>
+
 </html>

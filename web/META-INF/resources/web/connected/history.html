@@ -1,62 +1,50 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="utf-8" />
-    <!--
+<head>
+<meta charset="utf-8" />
+<!--
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
     -->
-    <link rel="stylesheet" href="../../styles/style.css">
+<link rel="stylesheet" href="../../styles/style.css">
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Compiled and minified JavaScript -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+	crossorigin="anonymous"></script>
 
-    <title>feamer | beam up your files.</title>
-    
-    
-    <script src="./../../scripts/javascript.js"></script>
-  </head>
-  <body>
-    <!-- Sichtbarer Dokumentinhalt im body -->
-    <div id="headerbar">
-    	<ul>
-		  <li>
-		  	<a href="../../index.html" class="notactive">Home</a></li>
-		  <li>
-		  	<a href="./../web/news.html" class="notactive">News</a></li>
-		  <li>
-		  	<a href="./../web/contact.html" class="activepage">Contact</a>
-		  </li>
-		  <li>
-		  	<a href="./../web/about.html" class="notactive">About Us</a>
-		  </li>
-		 <!--
-		  <li>
-		  	<a href="/about" class="notactive">Foo</a>
-		  </li>
-		 -->
-		  <li style="float:right">
-		  	<a href="./../web/login.html" class="notactive">Login</a>
-		  </li>
-		  <li style="float:right">
-		  	<a href="./../web/register.html" class="notactive">Register</a>
-		  </li>
-  		</ul>
-    </div>
-	
-	<div id="historytable">
-		<table>
-			<thead>
-				<tr>
-					<th>Typ</th>
-					<th>Datei</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="prod: ${allHistory}">
-					<td th:text="${prod.type}">up</td>
-					<td th:text="${prod.id}">id</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>    
-	    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+<title>feamer | beam up your files.</title>
 
-  </body>
+
+<script src="./../../scripts/javascript.js"></script>
+</head>
+<body>
+	<nav class="nav-wrapper grey">
+		<a href="../../" class="brand-logo"><img
+			src="../images/feamer_logo.png" height="50"><span>feamer</span></a>
+		<ul class="right hide-on-med-and-down">
+			<li><a href="../../">Home</a></li>
+		</ul>
+	</nav>
+
+	<div class="container">
+		<h1>History</h1>
+		<div class="history-item row" th:each="history: ${allHistory}">
+			<div class="col s3" th:if="${history.type} == 'upload'">
+				<i class="fa fa-arrow-up" style="font-size: 3em; color: #00adef;"></i>
+			</div>
+			<div class="col s3" th:if="${history.type} == 'download'">
+				<i class="fa fa-arrow-down" style="font-size: 3em; color: #ff6a00"></i>
+			</div>
+			<div class="col s9">
+				<span style="font-size: 2em;" th:text="${history.id}"></span>
+			</div>
+		</div>
+	</div>
+</body>
 </html>

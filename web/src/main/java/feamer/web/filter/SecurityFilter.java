@@ -22,6 +22,13 @@ public class SecurityFilter {
 			}
 		});
 		
+		Spark.before("/connected/*", (req, res) -> {
+			String token = req.cookie("token");
+			if (!checkAuthentication(token)) {
+				res.redirect("/login");
+			}
+		});
+		
 	}
 	
 	public boolean checkAuthentication (String token) {

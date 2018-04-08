@@ -1,54 +1,41 @@
-body {
-	margin-left: 20px;
-	margin-right: 20px;
-	background-color: #2a2a2a;
+body{
+	background-color: grey;
 	color: white;
-   /*# text-align: center;	*/
+}
+
+.logo {
+	background: radial-gradient(#3F3F3F 30%, #323232 70%);
+	width: 100%;
+	padding-bottom: 30px;
+	text-align: center;
+
 
 }
-/*
-div {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	
-	#padding-top: 10px; 
-	#padding-bottom: 10px; 
-	#border: 1px solid #73AD21;
 
+.history-item {
+	width:100%;
+	background-color: lightgrey
 }
-	*/
-#logo {
-	background-color: black;
-	padding-top: -10px; 
-	padding-bottom: -10px; 
-	margin-left: -20px; 
-	margin-right: -20px; 
-	
-	text-align: center;	
-	
 
+.info {
+	height: 200px;
+	background-color: lightgrey;
+	color:black;
 }
-#logo img {
-	display: block;
-    margin-left: auto;
-    margin-right: auto;
+
+.placeholder {
+	height:100px
 }
-p { 
-	/*
-	#width: 30em; 
-	#padding-top: 100px; 
-	#border: 1px solid red; 
-	*/	
-}
+
 .description {
 	margin-top: 20px;
 	margin-bottom: 20px;
 	/*#margin-left: 10em;
-	
+
 	border: 1px solid #5151c2;*/
 	overflow: auto;
 	/*#clear: right;*/
-	
+
 }
 .descriptiontext {
 	/*border: 1px solid #b38a22;*/
@@ -61,7 +48,7 @@ p {
 	/*border: 1px solid #73AD21;*/
 	float:left;
 	clear:right;
-	
+
 }
 
 .descriptionimg img {
@@ -125,7 +112,6 @@ p {
 
 #historytable {
 	margin-top: 10px;
-
 	margin-left: 50px;
-	
+
 }

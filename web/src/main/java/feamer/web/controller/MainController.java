@@ -1,9 +1,7 @@
 package feamer.web.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.xml.crypto.Data;
+import java.util.HashMap;import javax.swing.filechooser.FileNameExtensionFilter;
 
 import feamer.web.dto.FileDTO;
 import feamer.web.dto.HistoryDTO;
@@ -31,7 +29,24 @@ public class MainController {
 			
 			DataService.getInstance().addNewFile(fileId, filename, user, bytes);
 			DataService.getInstance().addNewHistory(DataService.generateID(), user, fileId, "upload");
-			WebsocketService.sendNotification(user, fileId, bytes.length, filename, req.ip());
+			WebsocketService.sendNotification(user, fileId, bytes.length, filename);
+			
+			return fileId;
+		});
+		
+		Spark.post("/rest/share", (req, res) -> {
+			String friendname = req.queryParams("friend");
+			byte[] bytes = req.bodyAsBytes();
+			String fileId = DataService.generateID();
+			String token = req.headers("Authorization");
+			String user = SecurityService.getInstance().getUserFromToken(token);
+			String filename = req.headers("Filename");
+			
+			System.out.println("share");
+			
+			DataService.getInstance().addNewFile(fileId, filename, user, bytes);
+			DataService.getInstance().addNewHistory(DataService.generateID(), user, fileId, "upload");
+			WebsocketService.sendNotification(friendname, fileId, bytes.length, filename);
 			
 			return fileId;
 		});
@@ -64,15 +79,20 @@ public class MainController {
 		});
 		
 		Spark.get("/rest/friends", (req, res) -> {
-			return "tobi- the coolest man in the county";
+			String token = req.headers("Authorization");
+			String user = SecurityService.getInstance().getUserFromToken(token);
+			return DataService.getInstance().getfriendNames(user);
 		});
 		
 		Spark.post("/rest/addFriend", (req, res) -> {
 			String token = req.headers("Authorization");
-			String friend = req.queryParams("id");
+			String friendname = req.queryParams("name");
+			if (friendname == null) {
+				return "";
+			}
 			String user = SecurityService.getInstance().getUserFromToken(token);
-			DataService.getInstance().addFriend(user, friend);
-			return null;
+			DataService.getInstance().addFriend(user, friendname);
+			return "";
 		});
 		
 		Spark.get("/info", (res, req) -> {
@@ -90,18 +110,16 @@ public class MainController {
 		});
 		
 		Spark.get("/connected/history", (req, res) -> {
-			HashMap<String, Object> model = new HashMap<>();
 			
-			ArrayList<HistoryDTO> hist = new ArrayList<>();
-			HistoryDTO hist1 = new HistoryDTO();
-			hist1.setId("234234-234234-232-234234");
-			hist1.setType("upload");
-			HistoryDTO hist2 = new HistoryDTO();
-			hist2.setId("5456-45646-5465-23454234");
-			hist2.setType("download");
-			hist.add(hist1);
-			hist.add(hist2);
-			model.put("allHistory", hist);
+			HashMap<String, Object> model = new HashMap<>();
+			String token = req.headers("Authorization");
+			if (token == null) {
+				token = req.cookie("token");
+			}
+			System.out.println("post history: "+token);
+			String user = SecurityService.getInstance().getUserFromToken(token);
+			System.out.println("history for user:" +user);
+			model.put("allHistory", DataService.getInstance().getHistory(user));
 			return TemplateService.getInstance().render(model, "web/connected/history");
 		});
 	}
