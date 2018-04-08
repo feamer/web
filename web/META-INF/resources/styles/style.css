@@ -122,3 +122,10 @@ p {
 .loginelements input {
 	/*#text-align: right;*/
 }
+
+#historytable {
+	margin-top: 10px;
+
+	margin-left: 50px;
+	
+}

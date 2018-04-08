@@ -150,12 +150,13 @@ function sha1(str) {
 function login() {
 	// holt sich ein token
 	var cookiename = "feamerkeks";
-
+	console.log("old cookie:" + getCookie(cookiename));
+	 
 	if(false) {//getCookie(cookiename) == null) {
 		// alert("feamerkeks :)");
 	} else {
 		var xhttp = new XMLHttpRequest();
-		xhttp.open("POST", "http://51.144.0.67/login", true);
+		xhttp.open("POST", "http://51.144.0.67/login", false);
 		//xhttp.setRequestHeader("Content-Type", "application/json");
 		xhttp.setRequestHeader('Content-type','application/json; charset=utf-8');
 
@@ -186,10 +187,20 @@ function login() {
 	
 
 	}
-	if(getCookie(cookiename) != null) {
-		window.location.replace("./connected/history.html");		
+	if( (getCookie(cookiename)) != null) {
+		//window.location.replace("./connected/history.html");		
+		console.log("cookie not null: " + getCookie(cookiename));
+		$.ajax({
+			url: './connected/history.html',
+			headers: { 'Authorization' : token },
+			success: function(result) {
+				//console.log("result: " + result);
+				//window.location='./connected/history.html';
+				window.location.href = "./connected/history.html";
+			}
+		});
 	}
-
+	
 
 }
 

@@ -40,22 +40,22 @@
   		</ul>
     </div>
 	
-	
-	<table>
-		<thead>
-			<tr>
-				<th th:text="#{msgs.headers.name}">Name</th>
-				<th th:text="#{msgs.headers.price}">Price</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="prod: ${allProducts}">
-				<td th:text="${prod.name}">Oranges</td>
-				<td th:text="${#numbers.formatDecimal(prod.price, 1, 2)}">0.99</td>
-			</tr>
-		</tbody>
-	</table>
-	    
+	<div id="historytable">
+		<table>
+			<thead>
+				<tr>
+					<th th:text="#{msgs.headers.typ}">Typ</th>
+					<th th:text="#{msgs.headers.id}">Datei</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="prod: ${allHistory}">
+					<td th:text="${prod.typ}">up</td>
+					<td th:text="${#prod.id}">id</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>    
 	    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
 
   </body>
