@@ -31,7 +31,7 @@ public class MainController {
 			
 			DataService.getInstance().addNewFile(fileId, filename, user, bytes);
 			DataService.getInstance().addNewHistory(DataService.generateID(), user, fileId, "upload");
-			WebsocketService.sendNotification(user, fileId, filename, req.ip());
+			WebsocketService.sendNotification(user, fileId, bytes.length, filename, req.ip());
 			
 			return fileId;
 		});

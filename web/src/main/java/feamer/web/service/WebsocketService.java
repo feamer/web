@@ -57,7 +57,7 @@ public class WebsocketService {
 
 	}
 
-	public static void sendNotification(String user, String fileId, String filename, String origin) {
+	public static void sendNotification(String user, String fileId, long size, String filename, String origin) {
 		
 		CopyOnWriteArrayList<Session> list = sessions.get(user);
 		System.out.println("user: "+user);
@@ -69,6 +69,7 @@ public class WebsocketService {
 		JSONObject meta = new JSONObject();
 		meta.put("name", filename);
 		meta.put("endpoint", "/rest/file/"+fileId);
+		meta.put("size", size);
 		meta.put("timestamp", System.currentTimeMillis());
 		for (Session s :list) {
 			try {
