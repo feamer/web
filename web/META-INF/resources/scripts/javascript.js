@@ -149,9 +149,10 @@ function sha1(str) {
 
 function login() {
 	// holt sich ein token
-	
-	if(getCookie(cookiename) == null) {
-		alert("feamerkeks :)");
+	var cookiename = "feamerkeks";
+
+	if(false) {//getCookie(cookiename) == null) {
+		// alert("feamerkeks :)");
 	} else {
 		var xhttp = new XMLHttpRequest();
 		xhttp.open("POST", "http://51.144.0.67/login", true);
@@ -185,6 +186,11 @@ function login() {
 	
 
 	}
+	if(getCookie(cookiename) != null) {
+		window.location.replace("./connected/history.html");		
+	}
+
+
 }
 
 function register() {
