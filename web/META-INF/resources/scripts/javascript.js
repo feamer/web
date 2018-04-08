@@ -156,7 +156,7 @@ function login() {
 		// alert("feamerkeks :)");
 	} else {
 		var xhttp = new XMLHttpRequest();
-		xhttp.open("POST", "http://51.144.0.67/login", false);
+		xhttp.open("POST", "/login", true);
 		//xhttp.setRequestHeader("Content-Type", "application/json");
 		xhttp.setRequestHeader('Content-type','application/json; charset=utf-8');
 
@@ -167,7 +167,7 @@ function login() {
 			+'}';
 		console.log(json_obj);
 		
-		var token = xhttp.send(json_obj);
+		xhttp.send(json_obj);
 		// xhttp.send(json_obj);
 
 		console.log("send request");
@@ -182,23 +182,26 @@ function login() {
 	           alert("Aktuelles Token: " + token);
 	           
 			   	setCookie(cookiename, token, 1);
+			   	
+			   	if( (getCookie(cookiename)) != null) {
+					//window.location.replace("./connected/history.html");		
+					console.log("cookie not null: " + getCookie(cookiename));
+					$.ajax({
+						url: '../connected/history',
+						headers: { 'Authorization' : token },
+						success: function(result) {
+							//console.log("result: " + result);
+							//window.location='./connected/history.html';
+							window.location.href = "../connected/history";
+						}
+					});
+				}
 
 		}
+
+		
 	
 
-	}
-	if( (getCookie(cookiename)) != null) {
-		//window.location.replace("./connected/history.html");		
-		console.log("cookie not null: " + getCookie(cookiename));
-		$.ajax({
-			url: './connected/history.html',
-			headers: { 'Authorization' : token },
-			success: function(result) {
-				//console.log("result: " + result);
-				//window.location='./connected/history.html';
-				window.location.href = "./connected/history.html";
-			}
-		});
 	}
 	
 

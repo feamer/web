@@ -18,12 +18,14 @@ public class DataService {
 	Connection con;
 	
 	
-	String addUser = "insert into users values (?, ?, ?)";
+	String addUser = "insert into users values (?, ?, ?, ?)";
 	String addFile = "insert into files values (?, ?, ?, ?, ?)";
 	String addHistory = "insert into history values (?, ?, ?, ?)";
 	String getFile = "select * from files where id=?";
 	String getUser = "select * from users where username=?";
+	String getUserById = "select * from users where id=?";
 	String deleteold = "delete from files where timestamp<?";
+	String updateFriend = "update users set friends=? where username=?";
 	
 	private DataService (){
 		try {
@@ -65,7 +67,7 @@ public class DataService {
 		try {
 			System.out.println("create initial database tables");
 			Statement s = con.createStatement();
-			s.execute("create table users(id varchar(255) not null primary key, username varchar(255), password varchar(255));");
+			s.execute("create table users(id varchar(255) not null primary key, username varchar(255), password varchar(255), friends array);");
 			s.execute("create table files(id varchar(255) not null primary key, filename varchar(255), userid varchar(255), file blob, timestamp bigint);");
 			s.execute("create table history(id varchar(255) not null primary key, userid varchar(255), fileid varchar(255), type varchar(255));");
 		} catch (SQLException e) {
@@ -83,6 +85,7 @@ public class DataService {
 			s.setString(1, id);
 			s.setString(2, username);
 			s.setString(3, password);
+			s.setArray(4, null);
 			
 			s.execute();
 		} catch (SQLException e) {
@@ -171,6 +174,10 @@ public class DataService {
 		return null;
 	}
 	
+	public UserDTO getUserById (String id){
+		return null;
+	}
+	
 	public String allData () {
 		
 		String result = "";
@@ -188,7 +195,7 @@ public class DataService {
 			
 			result += "users:\n";
 			while (users.next()) {
-				result += ""+users.getString(1)+", "+users.getString(2)+", "+users.getString(3)+"\n";
+				result += ""+users.getString(1)+", "+users.getString(2)+", "+users.getString(3)+", "+(Object[])users.getObject(4)+"\n";
 			}
 			
 			result += "history:\n";
@@ -203,6 +210,29 @@ public class DataService {
 		
 		return result;
 		
+	}
+	
+	public void addFriend (String user, String friend) {
+		Object[] friends;
+		try {
+			Statement query = con.createStatement();
+			ResultSet result = query.executeQuery("select firends from users where username="+user);
+			result.next();
+			friends = (Object[]) result.getObject("friends");
+			if (friends == null) {
+				friends = new Object[1];
+			}
+
+			friends[0] = friend;
+			
+			PreparedStatement s = con.prepareStatement(updateFriend);
+			s.setObject(1, friends);
+			s.execute();
+			;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void clearFiles() {

@@ -19,12 +19,12 @@
 		  <li>
 		  	<a href="../../index.html" class="notactive">Home</a></li>
 		  <li>
-		  	<a href="./../news.html" class="notactive">News</a></li>
+		  	<a href="./../web/news.html" class="notactive">News</a></li>
 		  <li>
-		  	<a href="./../contact.html" class="activepage">Contact</a>
+		  	<a href="./../web/contact.html" class="activepage">Contact</a>
 		  </li>
 		  <li>
-		  	<a href="./../about.html" class="notactive">About Us</a>
+		  	<a href="./../web/about.html" class="notactive">About Us</a>
 		  </li>
 		 <!--
 		  <li>
@@ -32,10 +32,10 @@
 		  </li>
 		 -->
 		  <li style="float:right">
-		  	<a href="./../login.html" class="notactive">Login</a>
+		  	<a href="./../web/login.html" class="notactive">Login</a>
 		  </li>
 		  <li style="float:right">
-		  	<a href="./../register.html" class="notactive">Register</a>
+		  	<a href="./../web/register.html" class="notactive">Register</a>
 		  </li>
   		</ul>
     </div>
@@ -44,14 +44,14 @@
 		<table>
 			<thead>
 				<tr>
-					<th th:text="#{msgs.headers.typ}">Typ</th>
-					<th th:text="#{msgs.headers.id}">Datei</th>
+					<th>Typ</th>
+					<th>Datei</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="prod: ${allHistory}">
-					<td th:text="${prod.typ}">up</td>
-					<td th:text="${#prod.id}">id</td>
+					<td th:text="${prod.type}">up</td>
+					<td th:text="${prod.id}">id</td>
 				</tr>
 			</tbody>
 		</table>
