@@ -179,9 +179,17 @@ function register() {
 	// registriert sich ein nutzer
 
 	var xhttp = new XMLHttpRequest();
-	xhttp.open("POST", "http://51.144.0.67/register", true);
+	xhttp.open("POST", "http://"+window.location.host+/register", true);
 	// xhttp.setRequestHeader("Content-Type", "application/json");
 	xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+	
+	var pass = document.getElementById('password_txtfield').value;
+	var pass_rep = document.getElementById('password_txtfield_repeat').value;
+	
+	if (pass !== pass_rep){
+		alert ('your repeated password does not match!');
+		return;
+	}
 
 	var json_obj = '{' + '"username" : "'
 			+ document.getElementById('username_txtfield').value + '",' // getElementsByTagName("input")[0]
@@ -241,7 +249,11 @@ function addFriend (id){
 	xhttp.setRequestHeader('Authorization', token);
 	xhttp.send();
 	xhttp.onload = function (){
-		alert('added new Friend with id' + id);
+		if (this.status == 200){			
+			alert('added new Friend with id ' + id);
+		} else {
+			alert('cant find friend: ' + id);
+		}
 	}
 	
 }

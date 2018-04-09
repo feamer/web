@@ -1,7 +1,7 @@
 package feamer.web.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -11,7 +11,6 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 @WebSocket
 public class WebsocketService {
@@ -20,8 +19,6 @@ public class WebsocketService {
 
 	@OnWebSocketConnect
 	public void connect(Session session) {
-		// default user
-
 		String token = session.getUpgradeRequest().getHeader("Authorization");
 		String user = SecurityService.getInstance().getUserFromToken(token);
 		System.out.println("connect user: "+user);
@@ -49,6 +46,7 @@ public class WebsocketService {
 				if (s.equals(session)) {
 					sessions.get(u).remove(s);
 					System.out.println("removed session, caused by" + reason);
+					System.out.println(getSessionOverview());
 				}
 			}
 		}
@@ -63,9 +61,7 @@ public class WebsocketService {
 
 		System.out.println("user: " + user);
 		CopyOnWriteArrayList<Session> list = new CopyOnWriteArrayList<Session>(sessions.get(user));
-		if (list == null) {
-			return;
-		}
+
 		System.out.println("send ws notification");
 		JSONObject meta = new JSONObject();
 		meta.put("name", filename);
@@ -83,5 +79,20 @@ public class WebsocketService {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private String getSessionOverview () {
+		String status = "";
+		
+		status += "Websocket status: \n\n";
+		for (Entry<String, CopyOnWriteArrayList<Session>> entry: sessions.entrySet()) {
+			status += entry.getKey() +": ";
+			for (Session s : entry.getValue()) {
+				status += s.getRemote().getInetSocketAddress() + " ";
+			}
+			status+="\n";
+		}
+		
+		return status;
 	}
 }

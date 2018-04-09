@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -56,9 +55,9 @@ public class DataService {
 			System.out.println("check database");
 			Statement s = con.createStatement();
 
-			ResultSet userData = s.executeQuery("select * from users");
-			ResultSet files = s.executeQuery("select * from files");
-			ResultSet history = s.executeQuery("select * from history");
+			s.executeQuery("select * from users");
+			s.executeQuery("select * from files");
+			s.executeQuery("select * from history");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
