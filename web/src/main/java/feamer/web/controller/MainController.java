@@ -2,6 +2,8 @@ package feamer.web.controller;
 
 import java.util.HashMap;
 
+import org.json.JSONObject;
+
 import feamer.web.service.DataService;
 import feamer.web.service.SecurityService;
 import feamer.web.service.TemplateService;
@@ -25,6 +27,14 @@ public class MainController extends AbstractController{
 			HashMap<String, Object> model = new HashMap<>();
 
 			return TemplateService.getInstance().render(model, "index");
+		});
+		
+		Spark.get("/health", (req, res) -> {
+			JSONObject status = new JSONObject();
+			
+			status.put("serverstatus", "up");
+			
+			return status.toString();
 		});
 		
 		Spark.get("/login", (req, res) -> {
