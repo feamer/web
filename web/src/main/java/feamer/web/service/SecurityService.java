@@ -1,12 +1,15 @@
 package feamer.web.service;
 
-import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import feamer.web.dto.UserDTO;
 
 public class SecurityService {
-	private HashMap<String, String> tokens = new HashMap<>();
+	private ConcurrentHashMap<String, String> tokens = new ConcurrentHashMap<>();
+	//token time to life
+	private static int TTTL = 3600000;
 
 	private static SecurityService service;
 
@@ -42,7 +45,7 @@ public class SecurityService {
 		tokens.remove(username);
 	}
 
-	public String authenticate(String username, String hasword) {
+	public String authenticate(String username, String hashword) {
 		
 		UserDTO user = DataService.getInstance().getUser(username);
 		if (user == null) {
@@ -50,7 +53,7 @@ public class SecurityService {
 		}
 		String password = user.getPassword();
 		
-		if (password != null && password.equals(hasword)) {
+		if (password != null && password.equals(hashword)) {
 			String token = "";
 			if (tokens.containsKey(username)) {
 				token = tokens.get(username);
@@ -58,7 +61,7 @@ public class SecurityService {
 				token = generateToken();
 				tokens.put(username, token);
 			}
-			
+			cleanTokenStorage();
 			return token;
 		}
 		return "";
@@ -70,10 +73,35 @@ public class SecurityService {
 	}
 
 	public boolean validateToken(String token) {
+		
 		if (token == null) {
 			return false;
 		}
-		return tokens.containsValue(token);
+		
+		if (!tokens.containsValue(token)){
+			return false;
+		}
+		
+		if (!token.contains(".")){
+			return false;
+		}
+		
+		int timestamp = Integer.parseInt(token.split(".")[1]);
+		
+		if (timestamp + TTTL < System.currentTimeMillis()){
+			return false;
+		}
+		
+		//token is valid
+		return true;
+	}
+	
+	private void cleanTokenStorage(){
+		for (Entry<String, String> entry: tokens.entrySet()){
+			if (!validateToken(entry.getValue())){
+				tokens.remove(entry.getKey());
+			}
+		}
 	}
 
 }
